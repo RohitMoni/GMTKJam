@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class GridManager {
 
@@ -11,6 +12,24 @@ public class GridManager {
 		mGridSize.Set(10, 10);
         mGridCellSize.Set(1, 1);
 	}
+
+    // playerNumber is 1-4
+    public Vector2 GetGridPosForPlayer(int playerNumber) {
+        switch (playerNumber) {
+            case 1:
+                return new Vector2(0f, 0f);
+            case 2:
+                return new Vector2(mGridSize.x, mGridSize.y);
+            case 3:
+                return new Vector2(mGridSize.x, 0f);
+            case 4:
+                return new Vector2(0f, mGridSize.y);
+            default:
+                Debug.Log("Invalid Player Number!");
+                Assert.IsTrue(true);
+                return new Vector2(0f, 0f);
+        }
+    }
 
     public bool IsWithinBounds(int x, int y) {
         return x >= 0 && x <= mGridSize.x && y >= 0 && y <= mGridSize.y;

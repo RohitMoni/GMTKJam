@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour {
 
-	public GameObject mTileObject;
+	public GameObject tilePrefab;
 	
 	GameObject[,] mTileInstances;  
 	GridManager mGridManagerRef;
@@ -70,7 +70,7 @@ public class TileManager : MonoBehaviour {
 	}
 
 	GameObject CreateTileAt(Vector3 pos, Vector2 scaleXZ, Transform parent) {
-		GameObject newTile = Instantiate(mTileObject) as GameObject;
+		GameObject newTile = Instantiate(tilePrefab) as GameObject;
 		newTile.transform.position = pos;
 		newTile.transform.localScale = new Vector3(scaleXZ.x, 1, scaleXZ.y);
 		newTile.transform.parent = parent;

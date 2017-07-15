@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
 
-	public int tileVal = 1;
+	// Starts at 1, 1-4
+	public int playerNumber = 1;
 
 	Vector2 mGridPosInt;
 	Vector2 mOldGridPosInt;
@@ -15,14 +16,17 @@ public class PlayerScript : MonoBehaviour {
 	TileManager mTileManagerRef;
 
 	// Use this for initialization
-	void Start () {
-		mGridPos.Set(0, 0);
-		mGridPosInt.Set((int)0, (int)0);
-		mOldGridPosInt = mGridPosInt;
+	void Awake () {
 		mSpeedConst = 5.0f;
 
 		mGridManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>().mGridManager;
 		mTileManagerRef = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
+	}
+
+	public void MoveToStartPosition() {
+		mGridPos = mGridManagerRef.GetGridPosForPlayer(playerNumber);
+		mGridPosInt.Set((int)0, (int)0);
+		mOldGridPosInt = mGridPosInt;
 
 		UpdateWorldPos();
 	}
@@ -55,7 +59,7 @@ public class PlayerScript : MonoBehaviour {
 			}
 		}
 
-		mTileManagerRef.SetTilesAt(tilesToSet, tileVal);
+		mTileManagerRef.SetTilesAt(tilesToSet, playerNumber-1);
 	}
 
 	void UpdateWorldPos () {
@@ -65,8 +69,15 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void UpdateWithKeyboardInput() {
-		var x = Input.GetAxis("Horizontal") * Time.deltaTime * mSpeedConst;
-        var z = Input.GetAxis("Vertical") * Time.deltaTime * mSpeedConst;
+		string horizAxis = "Horizontal";
+		string vertAxis = "Vertical";
+		if (playerNumber > 1) {
+			horizAxis = string.Format("{0}{1}", horizAxis, playerNumber);
+			vertAxis = string.Format("{0}{1}", vertAxis, playerNumber);
+		}
+
+		var x = Input.GetAxis(horizAxis) * Time.deltaTime * mSpeedConst;
+        var z = Input.GetAxis(vertAxis) * Time.deltaTime * mSpeedConst;
 
 		mGridPos.x = Mathf.Clamp(mGridPos.x + x, 0, mGridManagerRef.mGridSize.x);
 		mGridPos.y = Mathf.Clamp(mGridPos.y + z, 0, mGridManagerRef.mGridSize.y);
