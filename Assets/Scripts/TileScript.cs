@@ -14,6 +14,7 @@ public class TileScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameObject.GetComponent<Renderer>().material = mMaterialA;
+		SetTileTo(1);
 	}
 	
 	// Update is called once per frame
