@@ -42,6 +42,19 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
+	public bool IsGridSpaceOccupiedByAnyPlayer(Vector2 gridPos) {
+		for (int i = 0; i < players.GetLength(0); ++i) {
+			if (players[i].activeSelf) {
+				PlayerScript script = players[i].GetComponent<PlayerScript>();
+				if (script.mOldGridPosInt == gridPos) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	// Player index 1-4
 	public void EnablePlayer(int playerIndex) {
 		players[playerIndex-1].SetActive(true);

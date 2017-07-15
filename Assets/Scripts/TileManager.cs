@@ -21,14 +21,15 @@ public class TileManager : MonoBehaviour {
 		
 	}
 
-	public void FlipTilesAt(Vector2[] gridPositions) {
-		for (int i = 0; i < gridPositions.GetLength(0); ++i) {
-			if (mGridManagerRef.IsWithinBounds(gridPositions[i])) {
-				GameObject tile = mTileInstances[(int)gridPositions[i].x, (int)gridPositions[i].y];
-				TileScript script = tile.GetComponent<TileScript>();
-				script.FlipTile();
-			}
+	public bool IsTileAtPosHaveVal(Vector2 gridPos, int tileVal) {
+		if (!mGridManagerRef.IsWithinBounds(gridPos)) {
+			return false;
 		}
+		
+		GameObject tileObj = mTileInstances[(int)gridPos.x, (int)gridPos.y];
+		TileScript script = tileObj.GetComponent<TileScript>();
+		
+		return script.tileVal == tileVal;
 	}
 
 	public void SetTilesAt(Vector2[] gridPositions, int tileVal) {

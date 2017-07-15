@@ -9,11 +9,10 @@ public class TileScript : MonoBehaviour {
 	public Material mMaterialC;
 	public Material mMaterialD;
 
-	bool flip;
+	public int tileVal;
 
 	// Use this for initialization
 	void Start () {
-		flip = false;
 		gameObject.GetComponent<Renderer>().material = mMaterialA;
 	}
 	
@@ -24,25 +23,22 @@ public class TileScript : MonoBehaviour {
 
 	public void SetTileTo(int val) {
 		switch (val) {
-			case 0:
+			case 1:
 			gameObject.GetComponent<Renderer>().material = mMaterialA;  			
 			break;
-			case 1:
+			case 2:
 			gameObject.GetComponent<Renderer>().material = mMaterialB;  			
 			break;
-			case 2:
+			case 3:
 			gameObject.GetComponent<Renderer>().material = mMaterialC;  			
 			break;
-			case 3:
+			case 4:
 			gameObject.GetComponent<Renderer>().material = mMaterialD;  			
 			break;
 			default:
 			break;
 		}
-	}
 
-	public void FlipTile() {
-		gameObject.GetComponent<Renderer>().material = flip ? mMaterialA : mMaterialB;  
-		flip = !flip;
+		tileVal = val;
 	}
 }

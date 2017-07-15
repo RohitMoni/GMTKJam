@@ -7,13 +7,14 @@ public class PlayerScript : MonoBehaviour {
 	// Starts at 1, 1-4
 	public int playerNumber = 1;
 
-	Vector2 mGridPosInt;
-	Vector2 mOldGridPosInt;
+	public Vector2 mOldGridPosInt; // This is actually the current pos its on
+	Vector2 mGridPosInt;	// These are the pos we're moving to / towards
 	Vector2 mGridPos;
 	float mSpeedConst;
 
 	GridManager mGridManagerRef;
 	TileManager mTileManagerRef;
+	PlayerManager mPlayerManagerRef;
 
 	// Use this for initialization
 	void Awake () {
@@ -21,11 +22,12 @@ public class PlayerScript : MonoBehaviour {
 
 		mGridManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>().mGridManager;
 		mTileManagerRef = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
+		mPlayerManagerRef = GameObject.FindWithTag("PlayerManager").GetComponent<PlayerManager>();
 	}
 
 	public void MoveToStartPosition() {
 		mGridPos = mGridManagerRef.GetGridPosForPlayer(playerNumber);
-		mGridPosInt.Set((int)0, (int)0);
+		mGridPosInt.Set((int)mGridPos.x, (int)mGridPos.y);
 		mOldGridPosInt = mGridPosInt;
 
 		UpdateWorldPos();
@@ -33,20 +35,7 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		UpdateWithKeyboardInput();
-	}
-
-	void FlipTiles() {
-		Vector2[] tilesToFlip = new Vector2[9];
-		// Square pattern around the player
-		int n = 0;
-		for (int i = (int)mGridPosInt.x-1; i <= (int)mGridPosInt.x+1; ++i) {
-			for (int j = (int)mGridPosInt.y-1; j <= (int)mGridPosInt.y+1; ++j) {
-				tilesToFlip[n++] = new Vector2(i, j);
-			}
-		}
-
-		mTileManagerRef.FlipTilesAt(tilesToFlip);
+		UpdateWithInput();
 	}
 
 	void SetTiles() {
@@ -59,16 +48,18 @@ public class PlayerScript : MonoBehaviour {
 			}
 		}
 
-		mTileManagerRef.SetTilesAt(tilesToSet, playerNumber-1);
+		mTileManagerRef.SetTilesAt(tilesToSet, playerNumber);
 	}
 
 	void UpdateWorldPos () {
 		Vector2 worldPos = mGridManagerRef.Grid2World(mGridPosInt);
 		transform.position = new Vector3(worldPos.x, transform.position.y, worldPos.y);
 		mOldGridPosInt = mGridPosInt;
+
+		SetTiles();
 	}
 
-	void UpdateWithKeyboardInput() {
+	void UpdateWithInput() {
 		string horizAxis = "Horizontal";
 		string vertAxis = "Vertical";
 		if (playerNumber > 1) {
@@ -86,8 +77,18 @@ public class PlayerScript : MonoBehaviour {
 		mGridPosInt.y = (int)mGridPos.y;
 
 		if (mOldGridPosInt != mGridPosInt) {
-			UpdateWorldPos();
-			SetTiles();
+			
+			// Trying to move
+			// If its not owned by us or its occupied, can't move there
+			if (mTileManagerRef.IsTileAtPosHaveVal(mGridPosInt, playerNumber) &&
+				!mPlayerManagerRef.IsGridSpaceOccupiedByAnyPlayer(mGridPosInt)) {
+				UpdateWorldPos();
+
+			}
+			else {
+				mGridPosInt = mOldGridPosInt;
+				mGridPos = mGridPosInt;
+			}
 		}
 	}
 }
