@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridTileManager {
+public class GridManager {
 
     public Vector2 mGridSize;
     public Vector2 mGridCellSize;
 
-	public GridTileManager () {
+	public GridManager () {
 		mGridSize.Set(10, 10);
         mGridCellSize.Set(1, 1);
 	}

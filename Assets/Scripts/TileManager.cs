@@ -5,10 +5,15 @@ using UnityEngine;
 public class TileManager : MonoBehaviour {
 
 	public GameObject mTileObject;
+	
+	GameObject[,] mTileInstances;  
+	GridManager mGridManagerRef;
 
 	// Use this for initialization
 	void Start () {
-		
+		mGridManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>().mGridManager;
+		mTileInstances = new GameObject[0,0];
+		CreateGridTiles();
 	}
 	
 	// Update is called once per frame
@@ -16,8 +21,50 @@ public class TileManager : MonoBehaviour {
 		
 	}
 
-	public void CreateTileAt(Vector3 pos) {
+	public void FlipTilesAt(Vector2[] gridPositions) {
+		for (int i = 0; i < gridPositions.GetLength(0); ++i) {
+			if (mGridManagerRef.IsWithinBounds(gridPositions[i])) {
+				GameObject tile = mTileInstances[(int)gridPositions[i].x, (int)gridPositions[i].y];
+				TileScript script = tile.GetComponent<TileScript>();
+				script.FlipTile();
+			}
+		}
+	}
+
+	void CleanGridTiles() {
+		for (int i = 0; i < mTileInstances.GetLength(0); ++i) {
+			for (int j = 0; j < mTileInstances.GetLength(1); ++j) {
+				Destroy(mTileInstances[i,j]);
+			}
+		}
+	}
+
+	void CreateGridTiles() {
+		CleanGridTiles();
+
+		Vector2 gridSize = mGridManagerRef.mGridSize;
+		mTileInstances = new GameObject[(int)gridSize.x + 1, (int)gridSize.y + 1];
+
+		Vector2 scaleXZ = new Vector2(1.0f/gridSize.x, 1.0f/gridSize.y);
+
+		for (int i = 0; i < mTileInstances.GetLength(0); ++i) {
+			GameObject tileHolder = new GameObject();
+			tileHolder.transform.parent = transform;
+			tileHolder.name = i.ToString();
+
+			for (int j = 0; j < mTileInstances.GetLength(1); ++j) {
+				Vector2 pos = mGridManagerRef.Grid2World(i, j);
+				mTileInstances[i,j] = CreateTileAt(new Vector3(pos.x, 0.01f, pos.y), scaleXZ, tileHolder.transform);
+			}
+		}
+	}
+
+	GameObject CreateTileAt(Vector3 pos, Vector2 scaleXZ, Transform parent) {
 		GameObject newTile = Instantiate(mTileObject) as GameObject;
-		newTile.transform.parent = transform;
+		newTile.transform.position = pos;
+		newTile.transform.localScale = new Vector3(scaleXZ.x, 1, scaleXZ.y);
+		newTile.transform.parent = parent;
+
+		return newTile;
 	}
 }

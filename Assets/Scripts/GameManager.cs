@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-	public GridTileManager mGridTileManager;
+	public GridManager mGridManager;
 
 	GameManager() {
-		mGridTileManager = new GridTileManager();
+		mGridManager = new GridManager();
 	}
 
-	// Use this for initialization
 	void Start () {
 		
 	}
