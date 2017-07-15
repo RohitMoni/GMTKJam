@@ -21,6 +21,21 @@ public class TileManager : MonoBehaviour {
 		
 	}
 
+	public int[] GetTileCountsByPlayer() {
+		int[] numberOfTilesOwned = new int[4] {0, 0, 0, 0};
+
+		for (int i = 0; i < mTileInstances.GetLength(0); ++i) {
+			for (int j = 0; j < mTileInstances.GetLength(1); ++j) {
+				GameObject tile = mTileInstances[i,j];
+				TileScript script = tile.GetComponent<TileScript>();
+				Debug.Log(script.tileVal);
+				numberOfTilesOwned[script.tileVal-1]++;
+			}
+		}
+
+		return numberOfTilesOwned;
+	}
+
 	public bool IsTileAtPosHaveVal(Vector2 gridPos, int tileVal) {
 		if (!mGridManagerRef.IsWithinBounds(gridPos)) {
 			return false;
