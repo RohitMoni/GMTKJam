@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
 
+	public int tileVal = 1;
+
 	Vector2 mGridPosInt;
 	Vector2 mOldGridPosInt;
 	Vector2 mGridPos;
@@ -43,6 +45,19 @@ public class PlayerScript : MonoBehaviour {
 		mTileManagerRef.FlipTilesAt(tilesToFlip);
 	}
 
+	void SetTiles() {
+		Vector2[] tilesToSet = new Vector2[9];
+		// Square pattern around the player
+		int n = 0;
+		for (int i = (int)mGridPosInt.x-1; i <= (int)mGridPosInt.x+1; ++i) {
+			for (int j = (int)mGridPosInt.y-1; j <= (int)mGridPosInt.y+1; ++j) {
+				tilesToSet[n++] = new Vector2(i, j);
+			}
+		}
+
+		mTileManagerRef.SetTilesAt(tilesToSet, tileVal);
+	}
+
 	void UpdateWorldPos () {
 		Vector2 worldPos = mGridManagerRef.Grid2World(mGridPosInt);
 		transform.position = new Vector3(worldPos.x, transform.position.y, worldPos.y);
@@ -61,7 +76,7 @@ public class PlayerScript : MonoBehaviour {
 
 		if (mOldGridPosInt != mGridPosInt) {
 			UpdateWorldPos();
-			FlipTiles();
+			SetTiles();
 		}
 	}
 }
