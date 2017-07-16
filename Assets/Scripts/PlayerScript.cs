@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour {
 	Vector2 mGridPosInt;	// These are the pos we're moving to / towards
 	Vector2 mGridPos;
 	float mSpeedConst;
+	float mOpposingTileModifier;
 
 	GridManager mGridManagerRef;
 	TileManager mTileManagerRef;
@@ -19,6 +20,7 @@ public class PlayerScript : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		mSpeedConst = 5.0f;
+		mOpposingTileModifier = 0.5f;
 
 		mGridManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>().mGridManager;
 		mTileManagerRef = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
@@ -69,11 +71,18 @@ public class PlayerScript : MonoBehaviour {
 			vertAxis = string.Format("{0}{1}", vertAxis, playerNumber);
 		}
 
-		var x = Input.GetAxis(horizAxis) * Time.deltaTime * mSpeedConst;
-        var z = Input.GetAxis(vertAxis) * Time.deltaTime * mSpeedConst;
+		Vector2 direction = new Vector2(Input.GetAxis(horizAxis), Input.GetAxis(vertAxis));
+		Vector2 targetGridPos = mGridPosInt + direction;
 
-		mGridPos.x = Mathf.Clamp(mGridPos.x + x, 0, mGridManagerRef.mGridSize.x);
-		mGridPos.y = Mathf.Clamp(mGridPos.y + z, 0, mGridManagerRef.mGridSize.y);
+		Vector2 movement = direction * Time.deltaTime * mSpeedConst;
+
+		// Move slower on other players tiles
+		if (!mTileManagerRef.IsTileAtPosHaveVal(mGridPosInt, playerNumber)) {
+			movement *= mOpposingTileModifier;
+		}
+		
+		mGridPos.x = Mathf.Clamp(mGridPos.x + movement.x, 0, mGridManagerRef.mGridSize.x);
+		mGridPos.y = Mathf.Clamp(mGridPos.y + movement.y, 0, mGridManagerRef.mGridSize.y);
 
 		mGridPosInt.x = (int)mGridPos.x;
 		mGridPosInt.y = (int)mGridPos.y;
@@ -82,10 +91,8 @@ public class PlayerScript : MonoBehaviour {
 			
 			// Trying to move
 			// If its not owned by us or its occupied, can't move there
-			if (mTileManagerRef.IsTileAtPosHaveVal(mGridPosInt, playerNumber) &&
-				!mPlayerManagerRef.IsGridSpaceOccupiedByAnyPlayer(mGridPosInt)) {
+			if (!mPlayerManagerRef.IsGridSpaceOccupiedByAnyPlayer(mGridPosInt)) {
 				UpdateWorldPos();
-
 			}
 			else {
 				mGridPosInt = mOldGridPosInt;
