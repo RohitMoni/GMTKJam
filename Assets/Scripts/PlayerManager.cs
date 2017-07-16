@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour {
 
 	public GameObject playerPrefab;
+	
 	GameObject[] players;
+	float playerScaleFactor = 10f;	
 	bool acceptPlayerInput;
 	int numberOfEnabledPlayers = 0;
 	bool gameStarted = false;
@@ -15,6 +17,9 @@ public class PlayerManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		mGameManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+		
+		Vector2 gridSize = mGameManagerRef.mGridManager.mGridSize;
+		Vector2 scaleXZ = new Vector2(1.0f/gridSize.x*playerScaleFactor, 1.0f/gridSize.y*playerScaleFactor);
 
 		acceptPlayerInput = false;
 
@@ -24,6 +29,7 @@ public class PlayerManager : MonoBehaviour {
 			players[i] = Instantiate(playerPrefab) as GameObject;
 			players[i].transform.parent = transform;
 			players[i].name = string.Format("Player {0}", i+1);
+			players[i].transform.localScale = new Vector3(scaleXZ.x, scaleXZ.x, scaleXZ.y);
 
 			PlayerScript script = players[i].GetComponent<PlayerScript>();
 			script.playerNumber = i+1;

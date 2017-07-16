@@ -81,8 +81,8 @@ public class PlayerScript : MonoBehaviour {
 			movement *= mOpposingTileModifier;
 		}
 		
-		mGridPos.x = Mathf.Clamp(mGridPos.x + movement.x, 0, mGridManagerRef.mGridSize.x);
-		mGridPos.y = Mathf.Clamp(mGridPos.y + movement.y, 0, mGridManagerRef.mGridSize.y);
+		mGridPos.x = Mathf.Clamp(mGridPos.x + movement.x, 0, mGridManagerRef.mGridSize.x -1);
+		mGridPos.y = Mathf.Clamp(mGridPos.y + movement.y, 0, mGridManagerRef.mGridSize.y -1);
 
 		mGridPosInt.x = (int)mGridPos.x;
 		mGridPosInt.y = (int)mGridPos.y;

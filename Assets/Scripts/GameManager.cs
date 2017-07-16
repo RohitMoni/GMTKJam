@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour {
 
 		// Update score bar
 		int[] tilesOwned = mTileManagerRef.GetTileCountsByPlayer();
-		int totalNumberOfTiles = ((int)mGridManager.mGridSize.x+1) * ((int)mGridManager.mGridSize.y+1);
+		int totalNumberOfTiles = ((int)mGridManager.mGridSize.x) * ((int)mGridManager.mGridSize.y);
 
 		mScoreBar.value = (float)tilesOwned[1] / (float)totalNumberOfTiles;
 	}
