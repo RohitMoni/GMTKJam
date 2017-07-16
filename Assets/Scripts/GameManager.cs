@@ -13,13 +13,18 @@ public class GameManager : MonoBehaviour {
 	TileManager mTileManagerRef;
 	PlayerManager mPlayerManagerRef;
 
-	float timer = 15.0f;
+	float startTimer = 5.0f;
+	float gameTimer = 15.0f;
+
+	float timer;
 	// float lowTimeRemainingThreshold = 10.0f;
 
+	bool gamePaused = true; // We use this to pause the game before the game starts
 	bool gameEnded = false;
-	bool gamePaused = false;
+	bool startTimerStarted = false;
 
 	GameManager() {
+		timer = startTimer;
 		mGridManager = new GridManager();
 	}
 
@@ -27,10 +32,19 @@ public class GameManager : MonoBehaviour {
 		mTileManagerRef = GameObject.FindWithTag("TileManager").GetComponent<TileManager>();
 		mPlayerManagerRef = GameObject.FindWithTag("PlayerManager").GetComponent<PlayerManager>();
 		mWinText.transform.parent.gameObject.SetActive(false);
+		mTimeLeftText.text = "";
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (startTimerStarted) {
+			timer -= Time.deltaTime;
+			mTimeLeftText.text = ((int)timer).ToString();
+			if (timer <= 0) {
+				GameStart();
+			}
+		}
 
 		if (gamePaused || gameEnded) {
 			return;
@@ -51,9 +65,23 @@ public class GameManager : MonoBehaviour {
 		mScoreBar.value = (float)tilesOwned[0] / (float)totalNumberOfTiles;
 	}
 
+	public void BeginStartTimer() {
+		startTimerStarted = true;
+		mTimeLeftText.text = ((int)timer).ToString();
+	}
+
+	void GameStart() {
+		mPlayerManagerRef.GameHasStarted();
+		startTimerStarted = false;
+		timer = gameTimer;
+		mTimeLeftText.text = ((int)timer).ToString();
+		gamePaused = false;
+	}
+
 	void GameEnd() {
 		mPlayerManagerRef.GameHasEnded();
 		gameEnded = true;
+		mTimeLeftText.text = "";
 		
 		int[] tilesOwned = mTileManagerRef.GetTileCountsByPlayer();
 		int winningPlayerIndex = 0;

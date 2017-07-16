@@ -7,10 +7,16 @@ public class PlayerManager : MonoBehaviour {
 	public GameObject playerPrefab;
 	GameObject[] players;
 	bool acceptPlayerInput;
+	int numberOfEnabledPlayers = 0;
+	bool gameStarted = false;
+
+	GameManager mGameManagerRef;
 
 	// Use this for initialization
 	void Start () {
-		acceptPlayerInput = true;
+		mGameManagerRef = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+
+		acceptPlayerInput = false;
 
 		players = new GameObject[4];
 
@@ -40,8 +46,14 @@ public class PlayerManager : MonoBehaviour {
 			if (Input.GetAxis(horizAxis) != 0 || Input.GetAxis(vertAxis) != 0) {
 				if (!players[i-1].activeSelf) {
 					EnablePlayer(i);
+					numberOfEnabledPlayers++;
 				}
 			}
+		}
+		
+		if (numberOfEnabledPlayers > 1 && !gameStarted) {
+			mGameManagerRef.BeginStartTimer();
+			gameStarted = true;
 		}
 	}
 
@@ -80,5 +92,9 @@ public class PlayerManager : MonoBehaviour {
 
 	public void GameHasEnded() {
 		acceptPlayerInput = false;
+	}
+
+	public void GameHasStarted() {
+		acceptPlayerInput = true;
 	}
 }
