@@ -96,7 +96,7 @@ public class TileManager : MonoBehaviour {
 	GameObject CreateTileAt(Vector3 pos, Vector2 scaleXZ, Transform parent) {
 		GameObject newTile = Instantiate(tilePrefab) as GameObject;
 		newTile.transform.position = pos;
-		newTile.transform.localScale = new Vector3(scaleXZ.x, 1, scaleXZ.y);
+		newTile.transform.localScale = new Vector3(scaleXZ.x, 12, scaleXZ.y);
 		newTile.transform.parent = parent;
 
 		return newTile;
