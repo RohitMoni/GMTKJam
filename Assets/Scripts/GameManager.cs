@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour {
 		int[] tilesOwned = mTileManagerRef.GetTileCountsByPlayer();
 		int totalNumberOfTiles = ((int)mGridManager.mGridSize.x+1) * ((int)mGridManager.mGridSize.y+1);
 
-		mScoreBar.value = (float)tilesOwned[0] / (float)totalNumberOfTiles;
+		mScoreBar.value = (float)tilesOwned[1] / (float)totalNumberOfTiles;
 	}
 
 	public void BeginStartTimer() {
@@ -86,10 +86,10 @@ public class GameManager : MonoBehaviour {
 		int[] tilesOwned = mTileManagerRef.GetTileCountsByPlayer();
 		int winningPlayerIndex = 0;
 		int winningPlayerNumTiles = 0;
-		for (int i = 0; i < tilesOwned.GetLength(0); ++i) {
+		for (int i = 1; i < tilesOwned.GetLength(0); ++i) {
 			if (tilesOwned[i] > winningPlayerNumTiles) {
 				winningPlayerNumTiles = tilesOwned[i];
-				winningPlayerIndex = i+1;
+				winningPlayerIndex = i;
 			}
 		}
 

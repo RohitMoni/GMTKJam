@@ -22,13 +22,13 @@ public class TileManager : MonoBehaviour {
 	}
 
 	public int[] GetTileCountsByPlayer() {
-		int[] numberOfTilesOwned = new int[4] {0, 0, 0, 0};
+		int[] numberOfTilesOwned = new int[5] {0, 0, 0, 0, 0};
 
 		for (int i = 0; i < mTileInstances.GetLength(0); ++i) {
 			for (int j = 0; j < mTileInstances.GetLength(1); ++j) {
 				GameObject tile = mTileInstances[i,j];
 				TileScript script = tile.GetComponent<TileScript>();
-				numberOfTilesOwned[script.tileVal-1]++;
+				numberOfTilesOwned[script.tileVal]++;
 			}
 		}
 
