@@ -17,28 +17,53 @@ public class GridManager {
     public Vector2 GetGridPosForPlayer(int playerNumber) {
         Vector2 playerPos = new Vector2();
         switch (playerNumber) {
-            case 1:
+            case 1: // bottom left
                 playerPos.Set(1f, 1f);
                 break;
-            case 2:
+            case 2: // top right
                 playerPos.Set(mGridSize.x, mGridSize.y);
                 break;
-            case 3:
-                playerPos.Set(mGridSize.x, 0f);
+            case 3: // bottom right
+                playerPos.Set(mGridSize.x, 1f);
                 break;
-            case 4:
-                playerPos.Set(0f, mGridSize.y);
+            case 4: // top left
+                playerPos.Set(1f, mGridSize.y);
                 break;
             default:
                 Debug.Log("Invalid Player Number!");
                 Assert.IsTrue(true);
-                playerPos.Set(0f, 0f);
+                playerPos.Set(1f, 1f);
                 break;
         }
 
         // This is to convert it from 1-gridsize -> 0-gridSize-1 (0 index)
         playerPos -= new Vector2(1, 1);        
         return playerPos;
+    }
+
+    public Vector2 GetDirToCenterForPlayer(int playerNumber) {
+        Vector2 dir = new Vector2();
+        switch (playerNumber) {
+            case 1: // bottom left
+                dir.Set(1f, 1f);
+                break;
+            case 2: // top right
+                dir.Set(-1f, -1f);
+                break;
+            case 3: // bottom right
+                dir.Set(-1f, 1f);
+                break;
+            case 4: // top left
+                dir.Set(1f, -1f);
+                break;
+            default:
+                Debug.Log("Invalid Player Number!");
+                Assert.IsTrue(true);
+                dir.Set(1f, 1f);
+                break;
+        }
+
+        return dir;
     }
 
     public bool IsWithinBounds(int x, int y) {

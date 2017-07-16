@@ -76,7 +76,7 @@ public class PlayerScript : MonoBehaviour {
 		Vector2 movement = direction * Time.deltaTime * mSpeedConst;
 
 		// Move slower on other players tiles
-		if (!mTileManagerRef.IsTileAtPosHaveVal(mGridPosInt, playerNumber)) {
+		if (!mTileManagerRef.IsTileAtPosHaveVal(targetGridPos, playerNumber)) {
 			movement *= mOpposingTileModifier;
 		}
 		

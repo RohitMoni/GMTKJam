@@ -56,6 +56,14 @@ public class TileManager : MonoBehaviour {
 		}
 	}
 
+	public void SetTileAt(Vector2 gridPosition, int tileVal) {
+		if (mGridManagerRef.IsWithinBounds(gridPosition)) {
+			GameObject tile = mTileInstances[(int)gridPosition.x, (int)gridPosition.y];
+			TileScript script = tile.GetComponent<TileScript>();
+			script.SetTileTo(tileVal);
+		}
+	}
+
 	void CleanGridTiles() {
 		for (int i = 0; i < mTileInstances.GetLength(0); ++i) {
 			for (int j = 0; j < mTileInstances.GetLength(1); ++j) {

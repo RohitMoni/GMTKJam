@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 	float startTimer = 5.0f;
 	float gameTimer = 15.0f;
 
-	float timer;
+	public float timer;
 	// float lowTimeRemainingThreshold = 10.0f;
 
 	bool gamePaused = true; // We use this to pause the game before the game starts
