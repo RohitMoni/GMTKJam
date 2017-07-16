@@ -60,7 +60,6 @@ public class PlayerScript : MonoBehaviour {
 		transform.position = new Vector3(worldPos.x, transform.position.y, worldPos.y);
 		mOldGridPosInt = mGridPosInt;
 
-		SetTiles();
 	}
 
 	void UpdateWithInput() {
@@ -93,8 +92,9 @@ public class PlayerScript : MonoBehaviour {
 			// If its not owned by us or its occupied, can't move there
 			if (!mPlayerManagerRef.IsGridSpaceOccupiedByAnyPlayer(mGridPosInt)) {
 				UpdateWorldPos();
-			}
-			else {
+                SetTiles();
+            }
+            else {
 				mGridPosInt = mOldGridPosInt;
 				mGridPos = mGridPosInt;
 			}

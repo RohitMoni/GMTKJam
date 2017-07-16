@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class TileScript : MonoBehaviour {
 
-	public Material mMaterialA;
-	public Material mMaterialB;
-	public Material mMaterialC;
-	public Material mMaterialD;
-	public Material mMaterialNone;
+    public Material[] materials;
+    SkinnedMeshRenderer smrComponent;
 
 	public int tileVal;
 
 	// Use this for initialization
 	void Start () {
-		gameObject.GetComponent<Renderer>().material = mMaterialA;
+        smrComponent = GetComponent<SkinnedMeshRenderer>();
 		SetTileTo(0);
 	}
 	
@@ -24,24 +21,29 @@ public class TileScript : MonoBehaviour {
 	}
 
 	public void SetTileTo(int val) {
-		switch (val) {
+        smrComponent = GetComponent<SkinnedMeshRenderer>();
+
+        switch (val) {
 			case 0:
-			gameObject.GetComponent<Renderer>().material = mMaterialNone;
+                smrComponent.SetBlendShapeWeight(0, 0);
+                smrComponent.SetBlendShapeWeight(1, 0);
+                smrComponent.material = materials[0];
 			break;  						
 			case 1:
-			gameObject.GetComponent<Renderer>().material = mMaterialA;  			
-			break;
-			case 2:
-			gameObject.GetComponent<Renderer>().material = mMaterialB;  			
-			break;
-			case 3:
-			gameObject.GetComponent<Renderer>().material = mMaterialC;  			
+                smrComponent.SetBlendShapeWeight(0, 100);
+                smrComponent.SetBlendShapeWeight(1, 0);
+                smrComponent.material = materials[1];
+                break;
+            case 2:
+                smrComponent.SetBlendShapeWeight(0, 0);
+                smrComponent.SetBlendShapeWeight(1, 100);
+                smrComponent.material = materials[2];
+                break;
+            case 3:
 			break;
 			case 4:
-			gameObject.GetComponent<Renderer>().material = mMaterialD;  			
 			break;
 			default:
-			gameObject.GetComponent<Renderer>().material = mMaterialNone;
 			break;
 		}
 

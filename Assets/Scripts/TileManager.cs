@@ -70,7 +70,8 @@ public class TileManager : MonoBehaviour {
 		Vector2 gridSize = mGridManagerRef.mGridSize;
 		mTileInstances = new GameObject[(int)gridSize.x, (int)gridSize.y];
 
-		Vector2 scaleXZ = new Vector2(1.0f/(gridSize.x-1), 1.0f/(gridSize.y-1));
+        const float scaleFactor = 7f/12f;
+		Vector2 scaleXZ = new Vector2((gridSize.x-1) * scaleFactor, (gridSize.y-1) * scaleFactor);
 
 		for (int i = 0; i < mTileInstances.GetLength(0); ++i) {
 			GameObject tileHolder = new GameObject();
