@@ -6,9 +6,12 @@ public class PlayerManager : MonoBehaviour {
 
 	public GameObject playerPrefab;
 	GameObject[] players;
+	bool acceptPlayerInput;
 
 	// Use this for initialization
 	void Start () {
+		acceptPlayerInput = true;
+
 		players = new GameObject[4];
 
 		for (int i = 0; i < players.GetLength(0); ++i) {
@@ -69,5 +72,13 @@ public class PlayerManager : MonoBehaviour {
 	public void DisablePlayer(int playerIndex) {
 		players[playerIndex-1].SetActive(false);
 		players[playerIndex-1].name = string.Format("Player {0} (Disabled)", playerIndex);
+	}
+
+	public bool GetAcceptPlayerInput() {
+		return acceptPlayerInput;
+	}
+
+	public void GameHasEnded() {
+		acceptPlayerInput = false;
 	}
 }

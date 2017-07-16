@@ -35,7 +35,9 @@ public class PlayerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		UpdateWithInput();
+		if (mPlayerManagerRef.GetAcceptPlayerInput()) {
+			UpdateWithInput();
+		}
 	}
 
 	void SetTiles() {

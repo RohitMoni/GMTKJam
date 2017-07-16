@@ -28,7 +28,6 @@ public class TileManager : MonoBehaviour {
 			for (int j = 0; j < mTileInstances.GetLength(1); ++j) {
 				GameObject tile = mTileInstances[i,j];
 				TileScript script = tile.GetComponent<TileScript>();
-				Debug.Log(script.tileVal);
 				numberOfTilesOwned[script.tileVal-1]++;
 			}
 		}
