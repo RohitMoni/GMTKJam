@@ -9,8 +9,8 @@ public class GridManager {
     public Vector2 mGridCellSize;
 
 	public GridManager () {
-		mGridSize.Set(11, 11);
-        mGridCellSize.Set(1, 1);
+		mGridSize.Set(13, 13);
+        mGridCellSize.Set(10/(mGridSize.x-1),10/(mGridSize.y-1));
 	}
 
     // playerNumber is 1-4
